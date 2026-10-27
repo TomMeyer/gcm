@@ -143,8 +143,9 @@ def convert_memory_to_mb(value: str) -> int:
 def parse_gres(v: str) -> int:
     """Parse a GRES string of the form: gpu:[<type>:]<number>[(<stuff>)]
 
-    The type may contain any character except ':' and '(', e.g. 'volta',
-    'nvidia_gb200', '1g.10gb' or 'rtx_pro_4500_blackwell_server_edition'.
+    The type may contain any character except ':', '(', ')' and whitespace,
+    e.g. 'volta', 'nvidia_gb200', '1g.10gb' or
+    'rtx_pro_4500_blackwell_server_edition'.
 
     Examples:
 
@@ -161,7 +162,7 @@ def parse_gres(v: str) -> int:
     v = str.removeprefix(v, "gres:")
     v = str.removeprefix(v, "gres/")
 
-    result = re.match(r"gpu:(?:[^:()]+:)?([0-9]+)", v)
+    result = re.match(r"gpu:(?:[^:\s()]+:)?([0-9]+)", v)
     if result is None:
         raise ValueError(f"Failed to parse {v}")
     return int(result[1])

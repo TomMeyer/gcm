@@ -555,6 +555,9 @@ class TestSLURMParsing:
             # XXX: set test id manually because the default one derived from the param
             # value messes up tpx
             pytest.param("gpu::8", ValueError, id="double colon"),
+            pytest.param("gpu:volta", ValueError, id="no count"),
+            pytest.param("GPU:volta:8", ValueError, id="uppercase prefix"),
+            pytest.param("gpu:my type:4", ValueError, id="whitespace in type"),
         ],
     )
     @typechecked
